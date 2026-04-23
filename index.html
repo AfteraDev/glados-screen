@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLaDOS Screen</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        #glados-screen {
+            width: 640px;
+            height: 480px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: flicker 0.1s infinite steps(2, jump-start);
+            filter: blur(0.5px) contrast(1.2);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            background-color: black;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            100% { opacity: 0.85; }
+        }
+        @keyframes glitch {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(1px, -2px); }
+            60% { transform: translate(-1px, 2px); }
+            80% { transform: translate(2px, -1px); }
+            100% { transform: translate(0, 0); }
+        }
+        .glitch-effect {
+            animation: glitch 0.3s infinite steps(3);
+        }
+        #loader {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: #0f0;
+            font-family: monospace;
+            background: rgba(0,0,0,0.7);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 999;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="glados-screen"></div>
+    <div id="loader">Getting images: 0%</div>
+
+    <script>
+        const imageUrls = [
+            'images/glados_screens_b_g.png',
+            'images/glados_screens_barninterior001.png',
+            'images/glados_screens_bench001.png',
+            'images/glados_screens_bird001.png',
+            'images/glados_screens_bird002.png',
+            'images/glados_screens_bird003.png',
+            'images/glados_screens_bird004.png',
+            'images/glados_screens_bird005.png',
+            'images/glados_screens_black_bear_cub.png',
+            'images/glados_screens_blackmesa001.png',
+            'images/glados_screens_boots001.png',
+            'images/glados_screens_bow001.png',
+            'images/glados_screens_cake001.png',
+            'images/glados_screens_cake1.png',
+            'images/glados_screens_cake2.png',
+            'images/glados_screens_cake3.png',
+            'images/glados_screens_cake4.png',
+            'images/glados_screens_cake5.png',
+            'images/glados_screens_cake6.png',
+            'images/glados_screens_cake7.png',
+            'images/glados_screens_cake8.png',
+            'images/glados_screens_cake9.png',
+            'images/glados_screens_cake10.png',
+            'images/glados_screens_cake11.png',
+            'images/glados_screens_cake12.png',
+            'images/glados_screens_cake13.png',
+            'images/glados_screens_cake14.png',
+            'images/glados_screens_cake15.png',
+            'images/glados_screens_cake16.png',
+            'images/glados_screens_cake17.png',
+            'images/glados_screens_cake18.png',
+            'images/glados_screens_cake19.png',
+            'images/glados_screens_cake20.png',
+            'images/glados_screens_cake21.png',
+            'images/glados_screens_cake22.png',
+            'images/glados_screens_cake23.png',
+            'images/glados_screens_cake24.png',
+            'images/glados_screens_cake25.png',
+            'images/glados_screens_cakedutencil001.png',
+            'images/glados_screens_cakedutencil002.png',
+            'images/glados_screens_cakedutencil003.png',
+            'images/glados_screens_cakedutencil004.png',
+            'images/glados_screens_cakedutencil005.png',
+            'images/glados_screens_cakedutencil006.png',
+            'images/glados_screens_cakedutencil007.png',
+            'images/glados_screens_cakedutencil008.png',
+            'images/glados_screens_cakedutencil009.png',
+            'images/glados_screens_cakedutencil010.png',
+            'images/glados_screens_cakedutencil011.png',
+            'images/glados_screens_cakedutencil012.png',
+            'images/glados_screens_cakedutencil013.png',
+            'images/glados_screens_cakedutencil014.png',
+            'images/glados_screens_cakedutencilb01.png',
+            'images/glados_screens_cakedutencilb02.png',
+            'images/glados_screens_cakedutencilb03.png',
+            'images/glados_screens_cakedutencilb04.png',
+            'images/glados_screens_cakedutencilb05.png',
+            'images/glados_screens_confusedcake001.png',
+            'images/glados_screens_confusedcake002.png',
+            'images/glados_screens_confusedcake003.png',
+            'images/glados_screens_confusedcake004.png',
+            'images/glados_screens_confusedcake005.png',
+            'images/glados_screens_confusedcake006.png',
+            'images/glados_screens_confusedcake007.png',
+            'images/glados_screens_confusedcake008.png',
+            'images/glados_screens_confusedcake009.png',
+            'images/glados_screens_confusedcake010.png',
+            'images/glados_screens_dow001.png',
+            'images/glados_screens_eumb1.png',
+            'images/glados_screens_eraser001.png',
+            'images/glados_screens_euclid.png',
+            'images/glados_screens_farmequip001.png',
+            'images/glados_screens_fort_hays_experiment_station.png',
+            'images/glados_screens_goat001.png',
+            'images/glados_screens_goat002.png',
+            'images/glados_screens_heart1.png',
+            'images/glados_screens_hero1.png',
+            'images/glados_screens_hero2.png',
+            'images/glados_screens_horse001.png',
+            'images/glados_screens_horse002.png',
+            'images/glados_screens_knife001.png',
+            'images/glados_screens_parts1.png',
+            'images/glados_screens_parts2.png',
+            'images/glados_screens_parts3.png',
+            'images/glados_screens_parts4.png',
+            'images/glados_screens_parts5.png',
+            'images/glados_screens_parts6.png',
+            'images/glados_screens_parts7.png',
+            'images/glados_screens_pig001.png',
+            'images/glados_screens_platefstuff001.png',
+            'images/glados_screens_rabbitt001.png',
+            'images/glados_screens_science1.png',
+            'images/glados_screens_science2.png',
+            'images/glados_screens_science3.png',
+            'images/glados_screens_science4.png',
+            'images/glados_screens_science5.png',
+            'images/glados_screens_science6.png',
+            'images/glados_screens_science7.png',
+            'images/glados_screens_science8.png',
+            'images/glados_screens_science9.png',
+            'images/glados_screens_science10.png',
+            'images/glados_screens_science11.png',
+            'images/glados_screens_science12.png',
+            'images/glados_screens_scrap.png',
+            'images/glados_screens_screw001.png',
+            'images/glados_screens_screw002.png',
+            'images/glados_screens_sheep1.png',
+            'images/glados_screens_sign_danger.png',
+            'images/glados_screens_sign_exit.png',
+            'images/glados_screens_sign_skull.png',
+            'images/glados_screens_sign001.png',
+            'images/glados_screens_sign002.png',
+            'images/glados_screens_sign003.png',
+            'images/glados_screens_spheres001.png',
+            'images/glados_screens_spongeandutencil001.png',
+            'images/glados_screens_spongeandutencil002.png',
+            'images/glados_screens_spongeandutencil003.png',
+            'images/glados_screens_spongeandutencil004.png',
+            'images/glados_screens_spongeandutencil005.png',
+            'images/glados_screens_spongeandutencil006.png',
+            'images/glados_screens_spring001.png',
+            'images/glados_screens_techroom1.png',
+            'images/glados_screens_toolsandfruit001.png',
+            'images/glados_screens_toolsandfruit002.png',
+            'images/glados_screens_toy001.png',
+            'images/glados_screens_trashcan001.png',
+            'images/glados_screens_upside_down_shed.png',
+            'images/glados_screens_violin001.png',
+            'images/glados_screens_warworkers.png',
+            'images/glados_screens_wrench001.png'
+        ];
+
+        const screenElement = document.getElementById('glados-screen');
+        const loaderDiv = document.getElementById('loader');
+        
+        const loadedImages = [];
+        let preloadProgress = 0;
+        let animationInterval = null;
+
+        function preloadAllImages(urls) {
+            return new Promise((resolve) => {
+                let loadedCount = 0;
+                const total = urls.length;
+
+                if (total === 0) {
+                    resolve([]);
+                    return;
+                }
+
+                urls.forEach((url, idx) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        loadedCount++;
+                        preloadProgress = (loadedCount / total) * 100;
+                        loaderDiv.textContent = `Getting images: ${Math.floor(preloadProgress)}%`;
+                        loadedImages[idx] = img;
+                        if (loadedCount === total) {
+                            resolve(loadedImages);
+                        }
+                    };
+                    img.onerror = (err) => {
+                        console.warn(`Failed to get: ${url}`, err);
+                        loadedCount++;
+                        loadedImages[idx] = null;
+                        if (loadedCount === total) {
+                            resolve(loadedImages);
+                        }
+                    };
+                    img.src = url;
+                });
+            });
+        }
+
+        function startFlicker(imagesArray) {
+            setTimeout(() => {
+                if (loaderDiv) loaderDiv.style.opacity = '0';
+                setTimeout(() => loaderDiv && loaderDiv.remove(), 1000);
+            }, 500);
+
+            let currentIdx = 0;
+            const validImages = imagesArray.filter(img => img !== null);
+            if (validImages.length === 0) {
+                console.error('There is not a single image!');
+                return;
+            }
+
+            screenElement.style.backgroundImage = `url('${validImages[0].src}')`;
+            
+            animationInterval = setInterval(() => {
+                currentIdx = (currentIdx + 1) % validImages.length;
+                const nextImg = validImages[currentIdx];
+                if (nextImg && nextImg.complete && nextImg.naturalWidth > 0) {
+                    screenElement.style.backgroundImage = `url('${nextImg.src}')`;
+                } else {
+                    console.warn('The image is not ready, skipping');
+                }
+            }, 50);
+        }
+
+        screenElement.addEventListener('click', () => {
+            screenElement.classList.toggle('glitch-effect');
+        });
+
+        preloadAllImages(imageUrls).then((images) => {
+            startFlicker(images);
+        }).catch(err => {
+            console.error('Preloading error', err);
+            loaderDiv.textContent = 'Get error!';
+        });
+    </script>
+</body>
+</html>
